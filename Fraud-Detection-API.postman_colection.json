@@ -1,0 +1,245 @@
+{
+  "info": {
+    "name": "Fraud Detection System API",
+    "description": "Complete API collection for testing the fraud detection system",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "User Management",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"phoneNumber\": \"+1234567890\",\n  \"name\": \"John Doe\",\n  \"password\": \"SecurePass123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/register",
+              "host": ["{{base_url}}"],
+              "path": ["users", "register"]
+            }
+          }
+        },
+        {
+          "name": "Get User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/{{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["users", "{{user_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Trust Score",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/{{user_id}}/trust-score?trustScore=85.5",
+              "host": ["{{base_url}}"],
+              "path": ["users", "{{user_id}}", "trust-score"],
+              "query": [
+                {
+                  "key": "trustScore",
+                  "value": "85.5"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "Normal Transaction",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{user_id}}\",\n  \"amount\": 50.00,\n  \"currency\": \"USD\",\n  \"transactionType\": \"UPI\",\n  \"merchantId\": \"MERCH-001\",\n  \"merchantName\": \"Coffee Shop\",\n  \"merchantCategory\": \"FOOD\",\n  \"ipAddress\": \"192.168.1.100\",\n  \"country\": \"USA\",\n  \"city\": \"New York\",\n  \"latitude\": 40.7128,\n  \"longitude\": -74.0060,\n  \"deviceId\": \"DEVICE-001\",\n  \"deviceType\": \"MOBILE\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/transactions",
+              "host": ["{{base_url}}"],
+              "path": ["transactions"]
+            }
+          }
+        },
+        {
+          "name": "High Amount Transaction",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{user_id}}\",\n  \"amount\": 10000.00,\n  \"currency\": \"USD\",\n  \"transactionType\": \"CARD\",\n  \"merchantId\": \"MERCH-002\",\n  \"merchantName\": \"Luxury Store\",\n  \"merchantCategory\": \"RETAIL\",\n  \"ipAddress\": \"192.168.1.100\",\n  \"country\": \"USA\",\n  \"deviceId\": \"DEVICE-001\",\n  \"deviceType\": \"MOBILE\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/transactions",
+              "host": ["{{base_url}}"],
+              "path": ["transactions"]
+            }
+          }
+        },
+        {
+          "name": "QR Code Transaction",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{user_id}}\",\n  \"amount\": 150.00,\n  \"currency\": \"USD\",\n  \"transactionType\": \"QR_CODE\",\n  \"qrCodeId\": \"QR-123456\",\n  \"qrCodeData\": \"merchant_upi@bank\",\n  \"merchantId\": \"MERCH-003\",\n  \"merchantName\": \"Grocery Store\",\n  \"ipAddress\": \"192.168.1.100\",\n  \"country\": \"USA\",\n  \"deviceId\": \"DEVICE-001\",\n  \"deviceType\": \"MOBILE\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/transactions/qr",
+              "host": ["{{base_url}}"],
+              "path": ["transactions", "qr"]
+            }
+          }
+        },
+        {
+          "name": "New Device Transaction",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{user_id}}\",\n  \"amount\": 200.00,\n  \"currency\": \"USD\",\n  \"transactionType\": \"UPI\",\n  \"merchantId\": \"MERCH-004\",\n  \"merchantName\": \"Online Store\",\n  \"ipAddress\": \"203.0.113.45\",\n  \"country\": \"USA\",\n  \"deviceId\": \"DEVICE-NEW-999\",\n  \"deviceType\": \"WEB\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/transactions",
+              "host": ["{{base_url}}"],
+              "path": ["transactions"]
+            }
+          }
+        },
+        {
+          "name": "Get User Transactions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/transactions/user/{{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["transactions", "user", "{{user_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Fraud Detection",
+      "item": [
+        {
+          "name": "Get Fraud Statistics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/fraud/statistics/{{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["fraud", "statistics", "{{user_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Get User Fraud Alerts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/fraud/alerts/{{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["fraud", "alerts", "{{user_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Unreviewed Alerts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/fraud/alerts/unreviewed",
+              "host": ["{{base_url}}"],
+              "path": ["fraud", "alerts", "unreviewed"]
+            }
+          }
+        },
+        {
+          "name": "Review Fraud Alert",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/fraud/alerts/1/review?reviewedBy=admin&confirmedFraud=true&comments=Verified",
+              "host": ["{{base_url}}"],
+              "path": ["fraud", "alerts", "1", "review"],
+              "query": [
+                {
+                  "key": "reviewedBy",
+                  "value": "admin"
+                },
+                {
+                  "key": "confirmedFraud",
+                  "value": "true"
+                },
+                {
+                  "key": "comments",
+                  "value": "Verified"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080/api",
+      "type": "string"
+    },
+    {
+      "key": "user_id",
+      "value": "USR-12345678",
+      "type": "string"
+    }
+  ]
+}

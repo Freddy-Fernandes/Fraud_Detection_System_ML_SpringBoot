@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: fraud-detection-db
+    environment:
+      POSTGRES_DB: frauddb
+      POSTGRES_USER: frauduser
+      POSTGRES_PASSWORD: fraudpass123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - fraud-detection-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U frauduser -d frauddb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache (Optional)
+  redis:
+    image: redis:7-alpine
+    container_name: fraud-detection-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - fraud-detection-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # Fraud Detection Application
+  fraud-detection-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fraud-detection-app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/frauddb
+      SPRING_DATASOURCE_USERNAME: frauduser
+      SPRING_DATASOURCE_PASSWORD: fraudpass123
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - fraud-detection-network
+    volumes:
+      - ./models:/app/models
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  fraud-detection-network:
+    driver: bridge
